@@ -1,7 +1,5 @@
-// Browser-compatible translation module
 import { buildStateName, normalizeNamespace } from './schematic-reader.js';
 
-// Data will be loaded asynchronously
 let legacyMap = null;
 let javaToBedrockMap = null;
 
