@@ -31266,6 +31266,1543 @@
             "rot"
         ]
     },
+    "minecraft:acacia_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:oak_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:spruce_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:birch_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:jungle_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:dark_oak_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:mangrove_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:cherry_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:pale_oak_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:bamboo_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:crimson_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:warped_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+},
+    "minecraft:copper_chain": {
+        "name": "minecraft:copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:exposed_copper_chain": {
+        "name": "minecraft:exposed_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:oxidized_copper_chain": {
+        "name": "minecraft:oxidized_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_copper_chain": {
+        "name": "minecraft:waxed_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_exposed_copper_chain": {
+        "name": "minecraft:waxed_exposed_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_weathered_copper_chain": {
+        "name": "minecraft:waxed_weathered_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_oxidized_copper_chain": {
+        "name": "minecraft:waxed_oxidized_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:weathered_copper_chain": {
+        "name": "minecraft:weathered_copper_chain",
+        "removals": [
+            "waterlogged"
+        ],
+        "renames": {
+            "axis": "pillar_axis"
+        },
+        "values": {
+            "axis": [
+                "x",
+                "y",
+                "z"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "axis": "y",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:exposed_lightning_rod": {
+        "name": "minecraft:exposed_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:oxidized_lightning_rod": {
+        "name": "minecraft:oxidized_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_exposed_lightning_rod": {
+        "name": "minecraft:waxed_exposed_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_lightning_rod": {
+        "name": "minecraft:waxed_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_oxidized_lightning_rod": {
+        "name": "minecraft:waxed_oxidized_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_weathered_lightning_rod": {
+        "name": "minecraft:waxed_weathered_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:weathered_lightning_rod": {
+        "name": "minecraft:weathered_lightning_rod",
+        "removals": [
+            "waterlogged",
+            "powered"
+        ],
+        "renames": {
+            "facing": "facing_direction"
+        },
+        "remaps": {
+            "facing_direction": {
+                "down": "0",
+                "east": "5",
+                "north": "2",
+                "south": "3",
+                "up": "1",
+                "west": "4"
+            }
+        },
+        "values": {
+            "facing": [
+                "down",
+                "east",
+                "north",
+                "south",
+                "up",
+                "west"
+            ],
+            "powered": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "powered": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:copper_lantern": {
+        "name": "minecraft:copper_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:exposed_lantern": {
+        "name": "minecraft:exposed_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:oxidized_lantern": {
+        "name": "minecraft:oxidized_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_copper_lantern": {
+        "name": "minecraft:waxed_copper_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_exposed_copper_lantern": {
+        "name": "minecraft:waxed_exposed_copper_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_oxidized_copper_lantern": {
+        "name": "minecraft:waxed_oxidized_copper_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_weathered_copper_lantern": {
+        "name": "minecraft:waxed_weathered_copper_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:weathered_lantern": {
+        "name": "minecraft:weathered_lantern",
+        "removals": [
+            "waterlogged"
+        ],
+        "values": {
+            "hanging": [
+                "false",
+                "true"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "hanging": "false",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:copper_chest": {
+        "name": "minecraft:copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:exposed_copper_chest": {
+        "name": "minecraft:exposed_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:oxidized_copper_chest": {
+        "name": "minecraft:oxidized_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_copper_chestchest": {
+        "name": "minecraft:waxed_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_exposed_copper_chest": {
+        "name": "minecraft:waxed_exposed_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_oxidized_copper_chest": {
+        "name": "minecraft:waxed_oxidized_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:waxed_weathered_copper_chest": {
+        "name": "minecraft:waxed_weathered_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:weathered_copper_chest": {
+        "name": "minecraft:weathered_copper_chest",
+        "removals": [
+            "waterlogged",
+            "type"
+        ],
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ],
+            "type": [
+                "left",
+                "right",
+                "single"
+            ],
+            "waterlogged": [
+                "false",
+                "true"
+            ]
+        },
+        "defaults": {
+            "facing": "north",
+            "type": "single",
+            "waterlogged": "false"
+        }
+    },
+    "minecraft:copper_golem_statue": {
+        "name": "minecraft:copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:exposed_copper_golem_statue": {
+        "name": "minecraft:exposed_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:oxidized_copper_golem_statue": {
+        "name": "minecraft:oxidized_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:waxed_copper_golem_statue": {
+        "name": "minecraft:waxed_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:waxed_exposed_copper_golem_statue": {
+        "name": "minecraft:waxed_exposed_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:waxed_oxidized_copper_golem_statue": {
+        "name": "minecraft:waxed_oxidized_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:waxed_weathered_copper_golem_statue": {
+        "name": "minecraft:waxed_weathered_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
+    "minecraft:weathered_copper_golem_statue": {
+        "name": "minecraft:weathered_copper_golem_statue",
+        "renames": {
+            "facing": "minecraft:cardinal_direction"
+        },
+        "values": {
+            "facing": [
+                "east",
+                "north",
+                "south",
+                "west"
+            ]
+        },
+        "defaults": {
+            "facing": "north"
+        }
+    },
     "minecraft:zombie_wall_head": {
         "name": "minecraft:zombie_head",
         "additions": {
