@@ -14,12 +14,12 @@ function stripState(name) {
 
 const NON_SOLID_BLOCKS = new Set();
 
-for (const id of EXACT_NON_SOLID) {
+for (const id of exact) {
   NON_SOLID_BLOCKS.add(id);
 }
 
 function matchesIncludes(name) {
-  return INCLUDES_NON_SOLID.some(sub => name.includes(sub));
+  return includes.some(sub => name.includes(sub));
 }
 
 function isNonSolid(name) {
