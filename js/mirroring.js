@@ -1,4 +1,3 @@
-// Browser-compatible mirroring module
 import { coordsXZY, indexXZY } from './schematic-reader.js';
 
 function mirrorCoordinates(x, y, z, mirrorX, mirrorY, mirrorZ, width, height, length) {
