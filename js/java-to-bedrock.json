@@ -31266,6 +31266,47 @@
             "rot"
         ]
     },
+    "minecraft:acacia_shelf": {
+    "removals": [
+        "waterlogged"
+    ],
+    "renames": {
+        "facing": "minecraft:cardinal_direction",
+        "side_chain": "powered_shelf_type",
+        "powered": "powered_bit"
+    },
+    "remaps": {
+        "powered_shelf_type": {
+            "unconnected": "0",
+            "left": "1",
+            "center": "2",
+            "right": "3"
+        }
+    },
+    "values": {
+        "facing": [
+            "north",
+            "east",
+            "south",
+            "west"
+        ],
+        "powered": [
+            "false",
+            "true"
+        ],
+        "side_chain": [
+            "unconnected",
+            "left",
+            "center",
+            "right"
+        ]
+    },
+    "defaults": {
+        "facing": "north",
+        "powered": "false",
+        "side_chain": "unconnected"
+    }
+    },
     "minecraft:zombie_wall_head": {
         "name": "minecraft:zombie_head",
         "additions": {
