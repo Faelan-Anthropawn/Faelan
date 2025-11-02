@@ -112,8 +112,6 @@ fileInput.addEventListener('change', (e) => {
 
 helpButton.addEventListener('click', () => {
   alert(`
-Upload a schematic file (.schem, .schematic, or .litematic) and choose your options:
-
 Output Formats:
 • Build Pack - Structure based build loading using an in game gui - Recommended for larger builds
 • McStructure - Creates a single .mcstructure file (currently limited to a max of 250x250) - Recommended for smaller builds
