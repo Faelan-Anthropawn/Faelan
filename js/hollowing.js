@@ -1,4 +1,3 @@
-// Browser-compatible hollowing module
 import { coordsXZY, indexXZY } from './schematic-reader.js';
 
 const NON_SOLID_BLOCKS = new Set([ 
