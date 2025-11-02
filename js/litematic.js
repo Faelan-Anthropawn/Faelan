@@ -1,4 +1,3 @@
-// Browser-compatible litematic converter
 import { maybeDecompress, parseNBT, buildStateName, decodePackedBlockStates } from './schematic-reader.js';
 
 async function litematicToWorldEdit(arrayBuffer, filename) {
@@ -7,7 +6,6 @@ async function litematicToWorldEdit(arrayBuffer, filename) {
   const dataVersion = root.MinecraftDataVersion ?? 2730;
   const regions = root.Regions;
 
-  // For browser, we'll just convert the first region and return the ArrayBuffer
   for (const [regionName, region] of Object.entries(regions)) {
     const size = region.Size;
     const pos = region.Position;
@@ -69,7 +67,6 @@ async function litematicToWorldEdit(arrayBuffer, filename) {
     const nbtBuffer = encodeNBT(rootOut);
     const gzipped = pako.gzip(nbtBuffer);
     
-    // Return first region only for browser
     return gzipped.buffer;
   }
 
