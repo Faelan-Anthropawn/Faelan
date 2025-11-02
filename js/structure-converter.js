@@ -1,4 +1,3 @@
-// Browser-compatible structure converter
 const TAG_END = 0;
 const TAG_BYTE = 1;
 const TAG_INT = 3;
