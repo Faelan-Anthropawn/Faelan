@@ -1,4 +1,3 @@
-// Browser-compatible rotation module
 import { coordsXZY, indexXZY } from './schematic-reader.js';
 
 function normalizeRotation(angle) {
