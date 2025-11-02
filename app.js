@@ -1,4 +1,3 @@
-// Main application logic
 import { loadSchematic } from './js/schematic-reader.js';
 import { loadTranslationData, makeMergeKeyGetter } from './js/translation.js';
 import { hollowOutSchematic } from './js/hollowing.js';
@@ -8,11 +7,10 @@ import { addStructureVoidSupport } from './js/structure-void.js';
 import { generateCommands } from './js/command-writer.js';
 import { createNbtBuffer, convertCommandsToStructure } from './js/structure-converter.js';
 import { buildMcpack } from './js/pack.js';
-
+//Hi
 let currentFile = null;
 let currentFileName = '';
 
-// UI Elements
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-input');
 const browseButton = document.getElementById('browse-button');
@@ -29,7 +27,6 @@ const mirrorYBtn = document.getElementById('mirror-y');
 const mirrorZBtn = document.getElementById('mirror-z');
 const helpButton = document.getElementById('help-button');
 
-// Initialize
 async function init() {
   try {
     showStatus('Loading translation data...', 'info');
@@ -41,7 +38,6 @@ async function init() {
   }
 }
 
-// Status messages
 function showStatus(message, type = 'info') {
   statusMessage.textContent = message;
   statusMessage.className = type;
@@ -52,7 +48,6 @@ function hideStatus() {
   statusMessage.classList.add('hidden');
 }
 
-// File handling
 function handleFileSelect(file) {
   if (!file) return;
 
@@ -66,7 +61,6 @@ function handleFileSelect(file) {
   currentFileName = file.name;
   fileNameDisplay.textContent = file.name;
 
-  // Auto-fill output name if empty
   if (!outputNameInput.value) {
     const baseName = file.name.replace(/\.(schem|schematic|litematic)$/i, '');
     outputNameInput.value = baseName;
@@ -76,7 +70,6 @@ function handleFileSelect(file) {
   setTimeout(() => hideStatus(), 2000);
 }
 
-// Drag and drop
 dropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropZone.classList.add('drag-over');
@@ -111,36 +104,35 @@ fileInput.addEventListener('change', (e) => {
   }
 });
 
-// Mirror button toggles
 [mirrorXBtn, mirrorYBtn, mirrorZBtn].forEach(btn => {
   btn.addEventListener('click', () => {
     btn.classList.toggle('active');
   });
 });
 
-// Help button
 helpButton.addEventListener('click', () => {
   alert(`Faelans Schematic Converter
 
 Upload a schematic file (.schem, .schematic, or .litematic) and choose your options:
 
 Output Formats:
-• Build Pack - Creates an .mcpack file with structures split into 40x40x40 chunks
-• McStructure - Creates a single .mcstructure file (max 250x250)
-• Command Dump - Creates a .txt file with optimized fill/setblock commands
+• Build Pack - Structure based build loading using an in game gui - Recommended for larger builds
+• McStructure - Creates a single .mcstructure file (currently limited to a max of 250x250) - Recommended for smaller builds
+• Command Dump - Creates a .txt file with fill/setblock commands - Recommended for use in other tools
 
 Build Edits:
-• Hollow Build - Removes interior blocks, keeping only the outer shell
-• No Falling Blocks - Adds barriers below gravity-affected blocks
+• Hollow Build - Removes interior blocks, keeping only the outer shell.  This makes loading faster and less resource intensive.
+• No Falling Blocks - Adds barriers below gravity-affected blocks that would otherwise fall when loaded.
 
 Transformations:
-• Rotation - Rotate the schematic 0°, 90°, 180°, or 270°
-• Mirror - Mirror across X, Y, or Z axes (can combine)
+• Rotation - Rotate the schematic 0°, 90°, 180°, or 270° in the clockwise direction
+• Mirror - Mirror across X, Y, or Z axes (can combine any amount of mirrors)
 
-All processing is done client-side in your browser!`);
+PSA
+All processing is done client-side in your browser so processing times may vary.
+For XL schematics the website may become unresponsive.  If you click wait a few times it should still finish the process.`);
 });
 
-// Convert button
 convertButton.addEventListener('click', async () => {
   if (!currentFile) {
     showStatus('Please select a schematic file first', 'error');
@@ -179,7 +171,6 @@ convertButton.addEventListener('click', async () => {
     let getKeyAt = makeMergeKeyGetter(schem);
     let currentSchem = schem;
 
-    // Apply rotation
     if (rotation !== 0) {
       showStatus(`Rotating ${rotation}°...`, 'info');
       const rotationResult = applyRotation(currentSchem, getKeyAt, rotation);
@@ -187,7 +178,6 @@ convertButton.addEventListener('click', async () => {
       currentSchem = rotationResult.rotatedSchem;
     }
 
-    // Apply mirroring
     if (mirrorX || mirrorY || mirrorZ) {
       const axes = [];
       if (mirrorX) axes.push('X');
@@ -197,19 +187,16 @@ convertButton.addEventListener('click', async () => {
       getKeyAt = applyMirroring(currentSchem, getKeyAt, mirrorX, mirrorY, mirrorZ);
     }
 
-    // Apply hollowing
     if (hollow) {
       showStatus('Hollowing out schematic...', 'info');
       getKeyAt = hollowOutSchematic(currentSchem, getKeyAt);
     }
 
-    // Apply structure void support
     if (structureVoid) {
       showStatus('Adding barrier support for gravity blocks...', 'info');
       getKeyAt = addStructureVoidSupport(currentSchem, getKeyAt);
     }
 
-    // Generate output based on format
     if (outputFormat === 'commands') {
       showStatus('Generating commands...', 'info');
       const commands = generateCommands(currentSchem, getKeyAt, { useRelativeCoords: true });
@@ -272,7 +259,6 @@ convertButton.addEventListener('click', async () => {
   }
 });
 
-// Download helper
 function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -282,5 +268,4 @@ function downloadBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-// Start the app
 init();
