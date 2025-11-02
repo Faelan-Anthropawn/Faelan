@@ -1,14 +1,11 @@
-// Browser-compatible pack generator
 import { coordsXZY } from './schematic-reader.js';
 import { generateChunkCommands } from './command-writer.js';
 import { createNbtBuffer, convertCommandsToStructure } from './structure-converter.js';
 
-// UUID generation using Web Crypto API
 function uuid() {
   return crypto.randomUUID();
 }
 
-// Load and cache the pack base files
 let packBaseCache = null;
 async function loadPackBase() {
   if (packBaseCache) return packBaseCache;
@@ -28,7 +25,6 @@ async function loadPackBase() {
   return packBaseCache;
 }
 
-// CRC32 table
 const crc32Table = (() => {
   let t = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
@@ -55,12 +51,10 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
 
   if (onProgress) onProgress({ stage: 'loading', message: 'Loading pack base files...' });
   
-  // Load pack base files
   const packBase = await loadPackBase();
 
   if (onProgress) onProgress({ stage: 'analyzing', message: `Schematic dimensions: ${w}x${h}x${l}` });
 
-  // Find schematic min corner
   let schemMinX = Infinity, schemMinY = Infinity, schemMinZ = Infinity;
   const volume = w * h * l;
   for (let i = 0; i < volume; i++) {
@@ -144,7 +138,6 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
 
   if (onProgress) onProgress({ stage: 'building', message: `Creating mcpack with ${chunkMetadata.length} structures` });
 
-  // Generate function files
   const structureLoadCommands = [];
   for (const chunk of chunkMetadata) {
     const { name, loadOffset } = chunk;
@@ -175,7 +168,6 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
     });
   }
 
-  // Create manifest from base template
   const manifest = JSON.parse(JSON.stringify(packBase.manifest));
   manifest.header.name = packName;
   manifest.header.uuid = uuid();
@@ -187,7 +179,6 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
     data: new TextEncoder().encode(JSON.stringify(manifest, null, 2))
   });
 
-  // Update builder.js script with the correct MAX_FUNCTIONS value
   const builderScript = packBase.builderScript.replace(
     /const MAX_FUNCTIONS = \d+;/,
     `const MAX_FUNCTIONS = ${fileCount};`
@@ -198,13 +189,11 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
     data: new TextEncoder().encode(builderScript)
   });
 
-  // Add builder item
   chunkFiles.push({
     path: 'items/builder.json',
     data: new TextEncoder().encode(packBase.builderItem)
   });
 
-  // Add pack icon
   chunkFiles.push({
     path: 'pack_icon.png',
     data: packBase.packIcon
@@ -212,7 +201,6 @@ async function buildMcpack(schem, getKeyAt, packName, onProgress) {
 
   if (onProgress) onProgress({ stage: 'zipping', message: 'Creating ZIP archive...' });
 
-  // Use JSZip to create the mcpack
   const zip = new JSZip();
   for (const file of chunkFiles) {
     zip.file(file.path, file.data);
