@@ -1,4 +1,3 @@
-// Browser-compatible structure-void module
 import { coordsXZY, indexXZY } from './schematic-reader.js';
 
 const GRAVITY_BLOCKS = new Set([
