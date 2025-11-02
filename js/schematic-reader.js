@@ -1,6 +1,3 @@
-// Browser-compatible schematic reader
-// Uses pako for decompression (loaded from CDN)
-
 import { litematicToWorldEdit } from './litematic.js';
 
 const isObj = (x) => x && typeof x === "object" && !Array.isArray(x);
