@@ -1,4 +1,3 @@
-// Browser-compatible command writer
 import { coordsXZY, indexXZY } from './schematic-reader.js';
 
 function findOrigin(schem, getKeyAt) {
