@@ -1,0 +1,55 @@
+//original list
+
+const exact = new Set([ 
+  "minecraft:air", "minecraft:lava", "minecraft:flowing_lava", "minecraft:azalea", "minecraft:pale_hanging_moss", "minecraft:lever", "minecraft:hopper", "minecraft:heavy_core", "minecraft:glow_lichen", "minecraft:mangrove_propagule", "minecraft:dandelion", "minecraft:poppy", "minecraft:blue_orchid", "minecraft:allium", "minecraft:azure_bluet", "minecraft:oxeye_daisy", "minecraft:lily_of_the_valley", "minecraft:wither_rose", "minecraft:lilac", "minecraft:peony", "minecraft:wheat", "minecraft:carrots", "minecraft:potatoes", "minecraft:beetroots", "minecraft:melon_stem", "minecraft:pumpkin_stem", "minecraft:cocoa", "minecraft:nether_wart", "minecraft:bamboo", "minecraft:sugar_cane", "minecraft:kelp", "minecraft:seagrass", "minecraft:sea_pickle", "minecraft:mushroom", "minecraft:red_mushroom", "minecraft:brown_mushroom", "minecraft:decorated_pot", "minecraft:vault", "minecraft:pointed_dripstone", "minecraft:small_dripleaf_block", "minecraft:big_dripleaf", "minecraft:leaf_litter", "minecraft:pink_petals", "minecraft:nether_sprouts", "minecraft:crimson_roots", "minecraft:warped_roots", "minecraft:pitcher_crop", "minecraft:pitcher_plant", "minecraft:open_eyeblossom", "minecraft:closed_eyeblossom", "minecraft:portal", "minecraft:end_portal_frame", "minecraft:chorus_plant", "minecraft:lantern", "minecraft:campfire", "minecraft:soul_campfire", "minecraft:brewing_stand", "minecraft:grindstone", "minecraft:enchanting_table", "minecraft:lectern", "minecraft:redstone_wire", "minecraft:repeater", "minecraft:comparator", "minecraft:bed", "minecraft:ladder", "minecraft:scaffolding", "minecraft:bell", "minecraft:tripwire", "minecraft:string", "minecraft:painting", "minecraft:item_frame", "minecraft:glow_item_frame", "minecraft:skull", "minecraft:skeleton_skull", "minecraft:wither_skeleton_skull", "minecraft:barrier", "minecraft:web", "minecraft:beacon", "minecraft:conduit", "minecraft:stonecutter_block", "minecraft:frog_spawn", "minecraft:mob_spawner", "minecraft:trial_spawner", "minecraft:amethyst_cluster", "minecraft:large_amethyst_bud", "minecraft:medium_amethyst_bud", "minecraft:small_amethyst_bud", "minecraft:structure_void", "minecraft:grass_path", "minecraft:farmland", "minecraft:resin_clump", "minecraft:ominous_vault", "minecraft:dried_ghast", "minecraft:ice", "minecraft:honey_block", "minecraft:slime", "minecraft:light_block", "minecraft:tripwire_hook"
+]);
+
+
+
+//includes list
+
+const includes = [
+  "_leaves",
+  "water",
+  "_slab",
+  "_stairs",
+  "_shelf",
+  "_door",
+  "trapdoor",
+  "_button",
+  "pressure_plate",
+  "glass",
+  "_egg",
+  "cake",
+  "chest",
+  "rail",
+  "candle",
+  "_wall",
+  "_fence",
+  "_coral",
+  "chain",
+  "sign",
+  "_statue",
+  "sapling",
+  "anvil",
+  "banner",
+  "vine",
+  "carpet",
+  "_bar",
+  "cactus",
+  "_lantern",
+  "_tulip",
+  "_grate",
+  "_grass",
+  "bush",
+  "fern",
+  "torch",
+  "rod",
+  "_head",
+  "flower",
+  "_leaves",
+  "_leaves",
+  "_leaves",
+  "_leaves",
+  "_leaves",
+];
