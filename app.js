@@ -111,8 +111,7 @@ fileInput.addEventListener('change', (e) => {
 });
 
 helpButton.addEventListener('click', () => {
-  alert(`Faelans Schematic Converter
-
+  alert(`
 Upload a schematic file (.schem, .schematic, or .litematic) and choose your options:
 
 Output Formats:
