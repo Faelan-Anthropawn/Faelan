@@ -126,10 +126,8 @@ async function convertWorld() {
   if (totalBlocks > 1000000) {
     const sizeWarning = `WARNING: This region contains ${totalBlocks.toLocaleString()} blocks (${width}x${height}x${length}).\n\n` +
       `Large regions may take time to process.\n\n` +
-      `Recommended limits for best performance:\n` +
-      `• Build Pack: ~1,000,000 blocks (100x100x100)\n` +
-      `• McStructure: ~250,000 blocks (64x64x64)\n` +
-      `• Command Dump: ~500,000 blocks (80x80x80)\n\n` +
+      `This runs entirely in your browser and can be processing heavy\n` +
+      `Weak devices likely wont be able to run this conversion\n` +
       `Do you want to continue?`;
     
     if (!confirm(sizeWarning)) {
