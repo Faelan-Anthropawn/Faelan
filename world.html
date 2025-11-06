@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Faelans World Converter</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .glow-shadow {
+            box-shadow: 0 0 15px 1px rgba(13, 89, 242, 0.4);
+        }
+        .form-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 32px;
+        }
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #1b1f27;
+            border: 1px solid #3b4354;
+            transition: .4s;
+            border-radius: 9999px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #0d59f2;
+            border-color: #0d59f2;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .toggle-btn:focus {
+            outline: none;
+        }
+        .toggle-btn.active {
+            background-color: #0d59f2;
+            border-color: #0d59f2;
+            box-shadow: 0 0 15px 1px rgba(13, 89, 242, 0.4);
+        }
+        #drop-zone.drag-over {
+            border-color: #0d59f2 !important;
+            background-color: rgba(13, 89, 242, 0.1);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(13, 89, 242, 0.5);
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0d59f2",
+              "background-light": "#f5f6f8",
+              "background-dark": "#101622",
+              "secondary-dark": "#181e29",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display bg-background-dark text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden">
+<div class="relative z-10 flex flex-grow flex-col p-4 sm:p-6 lg:p-8">
+<header class="w-full border-b border-primary/30 pb-4 text-center mb-8">
+<h1 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">Faelans World Converter</h1>
+<p class="text-white/80 text-base mt-3">Upload your world file, configure the options, and convert.</p>
+<div class="text-amber-400 text-xs bg-amber-950/30 border border-amber-700/50 rounded px-3 py-2 max-w-xl mx-auto mt-3">
+⚠️ Requires a Java world file version 1.2.2 or newer.
+</div>
+</header>
+<main class="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+<div class="text-center">
+<a href="/" class="text-primary hover:underline text-sm">← Back to Home</a>
+</div>
+<div class="flex flex-col gap-6">
+<div id="drop-zone" class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-white/20 px-6 py-14 hover:border-primary transition-colors duration-300 cursor-pointer">
+<div class="flex max-w-[480px] flex-col items-center gap-2">
+<p class="text-white text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">World</p>
+<p id="file-name" class="text-slate-300 dark:text-white/70 text-sm font-normal leading-normal max-w-[480px] text-center">Drag &amp; drop a .zip file here or click to select a file</p>
+</div>
+<button id="browse-button" type="button" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-secondary-dark text-white text-sm font-bold leading-normal tracking-[0.015em] border border-white/20 hover:bg-primary/20 hover:border-primary transition-colors duration-300">
+<span class="truncate">Browse Files</span>
+</button>
+<input type="file" id="file-input" accept=".zip" class="hidden">
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">X1</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="X1" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">Y1</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="Y1" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">Z1</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="Z1" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">X2</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="X2" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">Y2</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="Y2" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-sm font-medium leading-normal pb-2">Z2</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-12 placeholder:text-[#9ca6ba] px-3 py-2 text-base font-normal leading-normal transition-all duration-300" placeholder="Z2" type="number" value=""/>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col w-full">
+<p class="text-white text-base font-medium leading-normal pb-2">Output Name</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-14 placeholder:text-[#9ca6ba] p-[15px] text-base font-normal leading-normal transition-all duration-300" placeholder="Enter the name for the output file" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-white text-base font-medium leading-normal pb-2">Output Options</p>
+<select class="form-select flex w-full min-w-0 flex-1 appearance-none resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-14 placeholder:text-[#9ca6ba] p-[15px] text-base font-normal leading-normal transition-all duration-300" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca6ba' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e&quot;); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em;">
+<option>Build Pack</option>
+<option>McStructure</option>
+<option>Command Dump</option>
+</select>
+</label>
+</div>
+</div>
+<div class="w-full h-px bg-white/10"></div>
+<div class="flex flex-col gap-6">
+<h3 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Build Edits</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex items-center justify-between p-4 rounded-lg bg-secondary-dark border border-white/10">
+<p class="text-white text-base font-medium leading-normal">Hollow Build</p>
+<label class="form-switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 rounded-lg bg-secondary-dark border border-white/10">
+<p class="text-white text-base font-medium leading-normal">No Falling Blocks</p>
+<label class="form-switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-white/10"></div>
+<div class="flex flex-col gap-6">
+<h3 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Transformations</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col w-full">
+<p class="text-white text-base font-medium leading-normal pb-2">Rotation</p>
+<select class="form-select flex w-full min-w-0 flex-1 appearance-none resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#3b4354] bg-[#1b1f27] focus:border-primary h-14 placeholder:text-[#9ca6ba] p-[15px] text-base font-normal leading-normal transition-all duration-300" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca6ba' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e&quot;); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em;">
+<option>0°</option>
+<option>90°</option>
+<option>180°</option>
+<option>270°</option>
+</select>
+</label>
+<div class="flex flex-col gap-2">
+<p class="text-white text-base font-medium leading-normal">Mirror</p>
+<div class="flex gap-2">
+<button id="mirror-x" type="button" class="toggle-btn flex flex-1 items-center justify-center h-14 rounded-lg bg-secondary-dark text-white font-bold border border-white/10 transition-colors">X</button>
+<button id="mirror-y" type="button" class="toggle-btn flex flex-1 items-center justify-center h-14 rounded-lg bg-secondary-dark text-white font-bold border border-white/10 transition-colors">Y</button>
+<button id="mirror-z" type="button" class="toggle-btn flex flex-1 items-center justify-center h-14 rounded-lg bg-secondary-dark text-white font-bold border border-white/10 transition-colors">Z</button>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-white/10"></div>
+<div class="flex justify-end pt-4">
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 focus:ring-4 focus:ring-primary/50 focus:outline-none transition-all duration-300 glow-shadow">
+<span class="truncate">Begin Conversion</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+
+<script type="module" src="world-converter.js"></script>
+</body>
+</html>
