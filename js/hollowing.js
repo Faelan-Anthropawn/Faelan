@@ -5,7 +5,7 @@ const exact = new Set([
 ]);
 
 const includes = [
-  "_leaves", "water", "_slab", "_stairs", "_shelf", "_door", "trapdoor", "_button", "pressure_plate", "glass", "_egg", "cake", "chest", "rail", "candle", "_wall", "_fence", "_coral", "chain", "sign", "_statue", "sapling", "anvil", "banner", "vine", "carpet", "_bar", "cactus", "_lantern", "_tulip", "_grate", "_grass", "bush", "fern", "torch", "rod", "_head", "flower", "_roots", "_plant", "_skull", "_bud", "lava", "_drip", ":lil", "spawner",
+  "_leaves", "water", "_slab", "_stairs", "_shelf", "_door", "trapdoor", "_button", "pressure_plate", "glass", "_egg", "cake", "chest", "rail", "candle", "_wall", "fence", "_coral", "chain", "sign", "_statue", "sapling", "anvil", "banner", "vine", "carpet", "_bar", "cactus", "_lantern", "_tulip", "_grate", "_grass", "bush", "fern", "torch", "rod", "_head", "flower", "_roots", "_plant", "_skull", "_bud", "lava", "_drip", ":lil", "spawner",
 ];
 
 function stripState(name) {
