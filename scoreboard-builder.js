@@ -145,7 +145,7 @@ function createRowElement(id, addNewline = false) {
   const deleteButton = row.querySelector('.row-delete');
 
   if (addNewline) {
-    textInput.value = '\n';
+    textInput.value = '\\n';
   }
 
   colorPickerToggle.addEventListener('click', (e) => {
