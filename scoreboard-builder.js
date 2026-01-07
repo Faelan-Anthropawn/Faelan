@@ -306,6 +306,11 @@ function generateCommand() {
 
     if (text) {
       const rowRawtext = parseRowText(text);
+
+      if (index > 0) {
+        allRawtext.push({ text: '\n' });
+      }
+
       allRawtext.push(...rowRawtext);
     }
   });
@@ -319,13 +324,6 @@ function generateCommand() {
   outputTextarea.value = command;
 }
 
-window.scoreboardTabCleanup = function() {
-  rowCounter = 0;
-  rowsContainer.innerHTML = '';
-  outputTextarea.value = '';
-  targetInput.value = '@s';
-  displayTypeSelect.value = 'actionbar';
-};
 
 function addRow() {
   rowCounter++;
