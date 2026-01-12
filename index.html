@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Faelans Space</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fondamento&family=Playfair+Display:wght@400;700&family=Oswald:wght@400;700&family=Pacifico&family=Bebas+Neue&family=Lobster&family=Righteous&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": { 
+                            DEFAULT: "#6366f1",
+                            50: "#eef2ff",
+                            100: "#e0e7ff",
+                            200: "#c7d2fe",
+                            300: "#a5b4fc",
+                            400: "#818cf8",
+                            500: "#6366f1",
+                            600: "#4f46e5",
+                            700: "#4338ca",
+                            800: "#3730a3",
+                            900: "#312e81"
+                        },
+                        "surface": {
+                            50: "#f8fafc",
+                            100: "#f1f5f9",
+                            200: "#e2e8f0",
+                            700: "#1e293b",
+                            800: "#0f172a",
+                            900: "#020617"
+                        }
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "system-ui", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --transition-fast: 120ms;
+            --transition-normal: 200ms;
+            --transition-slow: 300ms;
+        }
+        
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #475569 transparent;
+        }
+        
+        *::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        *::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+        
+        *::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color var(--transition-normal) ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #818cf8);
+            transform: scaleX(0);
+            transition: transform var(--transition-normal) ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            transform: scaleX(1);
+        }
+        
+        .nav-link.active {
+            color: #fff;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(71, 85, 105, 0.4);
+            backdrop-filter: blur(10px);
+            transition: all var(--transition-normal) ease;
+            border-radius: 12px;
+        }
+        
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 12px 40px -8px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            transition: all var(--transition-fast) ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #818cf8, #6366f1);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1.5px solid rgba(71, 85, 105, 0.6);
+            transition: all var(--transition-fast) ease;
+            font-weight: 500;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(51, 65, 85, 0.9);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .input-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.4);
+            transition: all var(--transition-fast) ease;
+        }
+        
+        .input-field:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+        
+        .input-field::placeholder {
+            color: #64748b;
+        }
+        
+        input[type="number"].input-field {
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: rgba(15, 23, 42, 0.6);
+            color: #fff;
+        }
+        
+        input[type="number"].input-field::-webkit-outer-spin-button,
+        input[type="number"].input-field::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .drop-zone {
+            border: 2px dashed rgba(71, 85, 105, 0.5);
+            transition: all var(--transition-normal) ease;
+        }
+        
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .form-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+        
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: rgba(71, 85, 105, 0.5);
+            border-radius: 9999px;
+            transition: var(--transition-normal);
+        }
+        
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: var(--transition-normal);
+        }
+        
+        input:checked + .slider {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+        
+        input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+        
+        .toggle-btn {
+            transition: all var(--transition-fast) ease;
+        }
+        
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            border-color: transparent;
+            box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.4);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn var(--transition-normal) ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .build-subtab-content {
+            animation: fadeIn var(--transition-normal) ease;
+        }
+        
+        .build-subtab-content.hidden {
+            display: none;
+        }
+        
+        .status-badge {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        
+        .status-badge.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        
+        .status-badge.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .status-badge.info {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .status-badge.idle {
+            background: rgba(71, 85, 105, 0.2);
+            color: #94a3b8;
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+        
+        .console-box {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.8125rem;
+            line-height: 1.6;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        
+        .console-entry {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+        }
+        
+        .console-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .console-timestamp {
+            color: #64748b;
+            margin-right: 0.5rem;
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.75);
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(71, 85, 105, 0.5), transparent);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtab-btn {
+            transition: all var(--transition-fast) ease;
+        }
+        
+        .subtab-btn.active {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: #fff;
+        }
+        
+        .social-link {
+            transition: all var(--transition-fast) ease;
+            border-color: rgba(71, 85, 105, 0.6);
+        }
+        
+        .social-link:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+            color: #a5b4fc;
+        }
+        
+        .cropper-handle {
+            touch-action: none;
+        }
+        
+        .cropper-handle:hover .w-0 {
+            border-top-color: #4ade80;
+        }
+        
+        .cropper-handle:hover .bg-green-400 {
+            background-color: #4ade80;
+        }
+        
+        .mode-toggle-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+        
+        .mode-toggle-btn.remove-mode {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .fade-toggle-btn {
+            background: rgba(71, 85, 105, 0.5);
+            color: #94a3b8;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        
+        .fade-toggle-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .fade-off-toggle-btn {
+            background: rgba(71, 85, 105, 0.5);
+            color: #94a3b8;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        
+        .fade-off-toggle-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .border-t-12 {
+            border-top-width: 12px;
+        }
+        
+        .color-picker-container {
+            position: relative;
+        }
+        
+        .color-dropdown {
+            position: absolute;
+            z-index: 9999 !important;
+        }
+        
+        .scoreboard-row {
+            overflow: visible !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        
+        .scoreboard-row.card {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        
+        .options-bar {
+            overflow: visible !important;
+        }
+        
+        #scoreboard-rows {
+            overflow: visible !important;
+        }
+        
+        #audio-meta-year,
+        #audio-meta-track {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            color: #fff !important;
+        }
+    </style>
+    <script>
+        function loadVideo(containerId) {
+            const container = document.getElementById('video-container-' + containerId);
+            const placeholder = document.querySelector(`[data-video-id="${containerId}"]`);
+            
+            let url = '';
+            let title = '';
+            
+            if (containerId === 'playlist_1') {
+                url = 'https://www.youtube-nocookie.com/embed?listType=playlist&list=UUBY6TQYs2_kaTSLHfmmqO2g&autoplay=1';
+                title = 'Most Recent Video';
+            } else if (containerId === 'playlist_2') {
+                url = 'https://www.youtube-nocookie.com/embed?listType=playlist&list=UUBY6TQYs2_kaTSLHfmmqO2g&index=2&autoplay=1';
+                title = 'Previous Video';
+            } else if (containerId === 'addons_playlist') {
+                url = 'https://www.youtube-nocookie.com/embed?listType=playlist&list=PL9YI5I7P0Y_kaTSLHfmmqO2g&autoplay=1';
+                title = 'Addon Showcase';
+            }
+            
+            if (url) {
+                container.innerHTML = `<iframe class="w-full h-full" src="${url}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                if (placeholder) {
+                    placeholder.style.opacity = '0';
+                    setTimeout(() => placeholder.classList.add('hidden'), 300);
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-surface-900 text-slate-300 antialiased">
+    <div class="min-h-screen flex flex-col">
+        <header class="sticky top-0 z-40 border-b border-slate-800/50 bg-surface-900/80 backdrop-blur-xl">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-xl sm:text-2xl font-bold gradient-text">Faelans Space</h1>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <a href="https://discord.com/users/1044864044143743037" target="_blank" class="social-link flex items-center justify-center w-10 h-10 rounded-lg bg-surface-800 border border-slate-700/50 text-slate-400 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/Faelan-Anthropawn/Faelan" target="_blank" class="social-link flex items-center justify-center w-10 h-10 rounded-lg bg-surface-800 border border-slate-700/50 text-slate-400 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="border-t border-slate-800/30">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex gap-1 overflow-x-auto py-1 -mb-px">
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="home">Home</a>
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="builds">Build Tools</a>
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="addons">Addons</a>
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="scoreboard">Scoreboard Builder</a>
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="music">Music</a>
+                            <a class="tab-link nav-link flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white cursor-pointer whitespace-nowrap" data-tab="audio">Music Tools</a>
+                        </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="flex-1">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                
+                <div id="home-content" class="tab-content active">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Welcome To My Space</h2>
+                            <p class="text-xl text-slate-400">A collection of browser-based tools I made for Minecraft Bedrock and music</p>
+                        </div>
+
+                        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-6 mb-12">
+                            <p class="text-center text-slate-300 leading-relaxed">Everything is run entirely in your browser.  No uploads, accounts, limits, tracking, or even ads.  If you have questions or concerns all code and my discord can be found at the top right corner.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+                            <!-- Minecraft Section -->
+                            <div class="p-8 rounded-2xl bg-slate-800/20 border border-slate-700/50 space-y-6 shadow-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary text-2xl">construction</span>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white">Minecraft Bedrock</h3>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider px-1">Build Tools</span>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="builds" data-subtab="schematic">
+                                                <span class="material-symbols-outlined text-sm">home_storage</span>
+                                                Schematic
+                                            </button>
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="builds" data-subtab="world">
+                                                <span class="material-symbols-outlined text-sm">public</span>
+                                                World
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider px-1">Other</span>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-tab-link" data-tab="scoreboard">
+                                                <span class="material-symbols-outlined text-sm">view_list</span>
+                                                Scoreboards
+                                            </button>
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-tab-link" data-tab="addons">
+                                                <span class="material-symbols-outlined text-sm">extension</span>
+                                                Addons
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Music Section -->
+                            <div class="p-8 rounded-2xl bg-slate-800/20 border border-slate-700/50 space-y-6 shadow-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary text-2xl">music_note</span>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white">Music & Audio</h3>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider px-1">Original Music</span>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-tab-link" data-tab="music">
+                                                <span class="material-symbols-outlined text-sm">play_circle</span>
+                                                Releases
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider px-1">Audio Tools</span>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="audio" data-subtab="metadata-editor">
+                                                <span class="material-symbols-outlined text-sm">edit_note</span>
+                                                Metadata
+                                            </button>
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="audio" data-subtab="volume-tool">
+                                                <span class="material-symbols-outlined text-sm">volume_up</span>
+                                                Volume
+                                            </button>
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="audio" data-subtab="audio-converter">
+                                                <span class="material-symbols-outlined text-sm">swap_horiz</span>
+                                                Cover Art
+                                            </button>
+                                            <button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:bg-primary/20 hover:border-primary/50 text-sm text-slate-300 transition-all home-subtab-link" data-tab="audio" data-subtab="audio-cropper">
+                                                <span class="material-symbols-outlined text-sm">content_cut</span>
+                                                Cropper
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="music-content" class="tab-content">
+                    <div class="w-full">
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Music</h2>
+                            <a href="https://www.youtube.com/channel/UCBY6TQYs2_kaTSLHfmmqO2g" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 btn-primary text-white font-semibold rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/>
+                                </svg>
+                                See More on YouTube
+                            </a>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="card rounded-xl overflow-hidden relative group">
+                                <div class="aspect-video relative">
+                                    <div class="video-placeholder absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 z-10 p-6 text-center transition-opacity" data-video-id="playlist_1">
+                                        <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform cursor-pointer" onclick="loadVideo('playlist_1')">
+                                            <span class="material-symbols-outlined text-primary text-3xl">play_circle</span>
+                                        </div>
+                                        <p class="text-white font-semibold mb-2">Most Recent Video</p>
+                                        <p class="text-slate-400 text-sm">Click to load and play. Note: Loading may use cookies from YouTube.</p>
+                                    </div>
+                                    <div id="video-container-playlist_1" class="w-full h-full"></div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-sm text-slate-500">Newest Release</p>
+                                </div>
+                            </div>
+                            <div class="card rounded-xl overflow-hidden relative group">
+                                <div class="aspect-video relative">
+                                    <div class="video-placeholder absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 z-10 p-6 text-center transition-opacity" data-video-id="playlist_2">
+                                        <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform cursor-pointer" onclick="loadVideo('playlist_2')">
+                                            <span class="material-symbols-outlined text-primary text-3xl">play_circle</span>
+                                        </div>
+                                        <p class="text-white font-semibold mb-2">Previous Video</p>
+                                        <p class="text-slate-400 text-sm">Click to load and play. Note: Loading may use cookies from YouTube.</p>
+                                    </div>
+                                    <div id="video-container-playlist_2" class="w-full h-full"></div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-sm text-slate-500">Previous Release</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="builds-content" class="tab-content">
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <button class="build-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="schematic">Schematic Converter</button>
+                        <button class="build-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="world">Beta - World Converter</button>
+                    </div>
+
+                    <div id="schematic-content" class="build-subtab-content">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Schematic Converter</h2>
+                                <button id="help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                    <span class="material-symbols-outlined text-xl">help</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-500 mb-8">Supporting up to 1.21.130 for .schem, .schematic, and .litematic files</p>
+                            
+                            <div class="space-y-6">
+                                <div id="drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">upload_file</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">Schematic Selector</p>
+                                            <p id="file-name" class="text-slate-500 text-sm">Drag & drop a file here or click to browse</p>
+                                        </div>
+                                        <button id="browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="file-input" accept=".schem,.schematic,.litematic" class="hidden">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Name</span>
+                                        <input id="output-name" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Enter output file name"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Format</span>
+                                        <select id="output-format" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                            <option value="pack">Build Pack</option>
+                                            <option value="mcstructure">McStructure</option>
+                                            <option value="commands">Command Dump</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white mb-4">Build Edits</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="card flex items-center justify-between p-4 rounded-lg">
+                                            <span class="text-sm font-medium text-slate-300">Hollow Build</span>
+                                            <label class="form-switch">
+                                                <input id="hollow-toggle" type="checkbox"/>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="card flex items-center justify-between p-4 rounded-lg">
+                                            <span class="text-sm font-medium text-slate-300">No Falling Blocks</span>
+                                            <label class="form-switch">
+                                                <input id="structure-void-toggle" type="checkbox"/>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex flex-col gap-2 mt-4">
+                                            <span class="text-sm font-medium text-slate-300">Replace Block Types</span>
+                                            <div id="replacement-list" class="space-y-2"></div>
+                                            <button id="add-replacement" type="button" class="btn-secondary py-1.5 px-3 text-xs flex items-center gap-1 w-fit rounded-lg">
+                                                <span class="material-symbols-outlined text-sm">add</span> Add Replacement
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white mb-4">Transformations</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Rotation</span>
+                                            <select id="rotation-select" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option value="0">0°</option>
+                                                <option value="90">90°</option>
+                                                <option value="180">180°</option>
+                                                <option value="270">270°</option>
+                                            </select>
+                                        </label>
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Mirror</span>
+                                            <div class="flex gap-2">
+                                                <button id="mirror-x" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">X</button>
+                                                <button id="mirror-y" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">Y</button>
+                                                <button id="mirror-z" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">Z</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div class="flex justify-end">
+                                    <button id="convert-button" type="button" class="btn-primary flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold">
+                                        <span class="material-symbols-outlined">sync</span>
+                                        Convert
+                                    </button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div id="status-message" class="status-badge idle">Waiting to start...</div>
+                                    
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-slate-300 mb-2">Console Output</h3>
+                                        <div id="console-box" class="console-box card rounded-lg p-4">
+                                            <div class="console-entry">
+                                                <span class="console-timestamp">[--:--:--]</span>
+                                                <span class="text-slate-500">Ready. Waiting for conversion to start...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="world-content" class="build-subtab-content hidden">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Beta - World Converter</h2>
+                                <button id="world-help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                    <span class="material-symbols-outlined text-xl">help</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-500 mb-8">Supporting Java worlds from 1.2.2 to 1.21.130</p>
+                            
+                            <div class="space-y-6">
+                                <div id="world-drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">public</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">World Selector</p>
+                                            <p id="world-file-name" class="text-slate-500 text-sm">Drag & drop a file here or click to browse</p>
+                                        </div>
+                                        <button id="world-browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="world-file-input" accept=".zip" class="hidden">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">X1</span>
+                                        <input id="world-x1" class="input-field h-11 px-3 rounded-lg text-white" placeholder="X1" type="number"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Y1</span>
+                                        <input id="world-y1" class="input-field h-11 px-3 rounded-lg text-white" placeholder="Y1" type="number"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Z1</span>
+                                        <input id="world-z1" class="input-field h-11 px-3 rounded-lg text-white" placeholder="Z1" type="number"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">X2</span>
+                                        <input id="world-x2" class="input-field h-11 px-3 rounded-lg text-white" placeholder="X2" type="number"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Y2</span>
+                                        <input id="world-y2" class="input-field h-11 px-3 rounded-lg text-white" placeholder="Y2" type="number"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Z2</span>
+                                        <input id="world-z2" class="input-field h-11 px-3 rounded-lg text-white" placeholder="Z2" type="number"/>
+                                    </label>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Name</span>
+                                        <input id="world-output-name" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Enter output file name"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Format</span>
+                                        <select id="world-output-format" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                            <option>Build Pack</option>
+                                            <option>McStructure</option>
+                                            <option>Command Dump</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white mb-4">Build Edits</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="card flex items-center justify-between p-4 rounded-lg">
+                                            <span class="text-sm font-medium text-slate-300">Hollow Build</span>
+                                            <label class="form-switch">
+                                                <input id="world-hollow-toggle" type="checkbox"/>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="card flex items-center justify-between p-4 rounded-lg">
+                                            <span class="text-sm font-medium text-slate-300">No Falling Blocks</span>
+                                            <label class="form-switch">
+                                                <input id="world-structure-void-toggle" type="checkbox"/>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex flex-col gap-2 mt-4">
+                                            <span class="text-sm font-medium text-slate-300">Replace Block Types</span>
+                                            <div id="world-replacement-list" class="space-y-2"></div>
+                                            <button id="world-add-replacement" type="button" class="btn-secondary py-1.5 px-3 text-xs flex items-center gap-1 w-fit rounded-lg">
+                                                <span class="material-symbols-outlined text-sm">add</span> Add Replacement
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white mb-4">Transformations</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Rotation</span>
+                                            <select id="world-rotation-select" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option>0°</option>
+                                                <option>90°</option>
+                                                <option>180°</option>
+                                                <option>270°</option>
+                                            </select>
+                                        </label>
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Mirror</span>
+                                            <div class="flex gap-2">
+                                                <button id="world-mirror-x" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">X</button>
+                                                <button id="world-mirror-y" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">Y</button>
+                                                <button id="world-mirror-z" type="button" class="toggle-btn flex-1 h-12 rounded-lg bg-surface-800 text-white font-semibold border border-slate-700/50">Z</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div class="flex justify-end">
+                                    <button id="world-convert-button" type="button" class="btn-primary flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold">
+                                        <span class="material-symbols-outlined">sync</span>
+                                        Begin Conversion
+                                    </button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div id="world-status-message" class="status-badge idle">Waiting to start...</div>
+                                    
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-slate-300 mb-2">Console Output</h3>
+                                        <div id="world-console-box" class="console-box card rounded-lg p-4">
+                                            <div class="console-entry">
+                                                <span class="console-timestamp">[--:--:--]</span>
+                                                <span class="text-slate-500">Ready. Waiting for conversion to start...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="audio-content" class="tab-content">
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <button class="audio-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="metadata-editor">Metadata Editor</button>
+                        <button class="audio-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="cropper">Cropper</button>
+                        <button class="audio-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="volume">Volume Controls</button>
+                        <button class="audio-subtab-link subtab-btn px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 bg-surface-800 border border-slate-700/50" data-subtab="albumart">Album Art</button>
+                    </div>
+
+                    <div id="metadata-editor-content" class="audio-subtab-content">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Mp3/Wav Metadata Editor</h2>
+                                <button id="audio-help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                    <span class="material-symbols-outlined text-xl">help</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-500 mb-8">Convert and adjust audio format, bitrate, sample rate, and more</p>
+                            
+                            <div class="space-y-6">
+                                <div id="audio-drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">audio_file</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">Audio File Selector</p>
+                                            <p id="audio-file-name" class="text-slate-500 text-sm">Drag & drop an MP3 or WAV file here or click to browse</p>
+                                        </div>
+                                        <button id="audio-browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="audio-file-input" accept=".mp3,.wav" class="hidden">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Name</span>
+                                        <input id="audio-output-name" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Enter output file name"/>
+                                    </label>
+                                    <label class="flex flex-col">
+                                        <span class="text-sm font-medium text-slate-300 mb-2">Output Format</span>
+                                        <select id="audio-output-format" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                            <option value="mp3" selected>MP3</option>
+                                            <option value="wav">WAV</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white mb-4">Audio Settings</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Bitrate (MP3 only)</span>
+                                            <select id="audio-bitrate" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option value="128">128 kbps</option>
+                                                <option value="192">192 kbps</option>
+                                                <option value="256">256 kbps</option>
+                                                <option value="320" selected>320 kbps</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Sample Rate</span>
+                                            <select id="audio-sample-rate" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option value="22050">22.05 kHz</option>
+                                                <option value="44100" selected>44.1 kHz</option>
+                                                <option value="48000">48 kHz</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Channels</span>
+                                            <select id="audio-channels" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option value="1">Mono</option>
+                                                <option value="2" selected>Stereo</option>
+                                            </select>
+                                        </label>
+                                        <label class="flex flex-col">
+                                            <span class="text-sm font-medium text-slate-300 mb-2">Bit Depth (WAV only)</span>
+                                            <select id="audio-bit-depth" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                <option value="16" selected>16-bit</option>
+                                                <option value="24">24-bit</option>
+                                                <option value="32">32-bit</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-lg font-semibold text-white">Metadata Tags</h3>
+                                        <div class="card flex items-center gap-3 px-4 py-2 rounded-lg">
+                                            <span class="text-sm font-medium text-slate-300">Strip All Metadata</span>
+                                            <label class="form-switch">
+                                                <input id="audio-strip-metadata" type="checkbox"/>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="audio-metadata-fields" class="space-y-4">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Title</span>
+                                                <input id="audio-meta-title" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Song title"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Artist</span>
+                                                <input id="audio-meta-artist" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Artist name"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Album</span>
+                                                <input id="audio-meta-album" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Album name"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Year</span>
+                                                <input id="audio-meta-year" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Release year" type="text"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Genre</span>
+                                                <input id="audio-meta-genre" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Genre"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Track Number</span>
+                                                <input id="audio-meta-track" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Track #" type="text"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Publisher/Label</span>
+                                                <input id="audio-meta-publisher" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Publisher or record label"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Comment</span>
+                                                <input id="audio-meta-comment" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Additional comments"/>
+                                            </label>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Album Artwork</span>
+                                                <div class="flex items-start gap-4">
+                                                    <div id="audio-artwork-preview" class="w-24 h-24 rounded-lg bg-surface-800 border border-slate-700/50 flex items-center justify-center overflow-hidden">
+                                                        <span class="material-symbols-outlined text-3xl text-slate-600">image</span>
+                                                    </div>
+                                                    <div class="flex flex-col gap-2">
+                                                        <button id="audio-artwork-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                                            Choose Image
+                                                        </button>
+                                                        <button id="audio-artwork-clear" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white">
+                                                            Clear
+                                                        </button>
+                                                        <input type="file" id="audio-artwork-input" accept="image/jpeg,image/png" class="hidden">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section-divider"></div>
+
+                                <div class="flex justify-end">
+                                    <button id="audio-convert-button" type="button" class="btn-primary flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold">
+                                        <span class="material-symbols-outlined">sync</span>
+                                        Convert
+                                    </button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div id="audio-status-message" class="status-badge idle">Waiting to start...</div>
+                                    
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-slate-300 mb-2">Console Output</h3>
+                                        <div id="audio-console-box" class="console-box card rounded-lg p-4">
+                                            <div class="console-entry">
+                                                <span class="console-timestamp">[--:--:--]</span>
+                                                <span class="text-slate-500">Ready. Waiting for conversion to start...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cropper-content" class="audio-subtab-content hidden">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Select the part to trim</h2>
+                                <button id="cropper-help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                    <span class="material-symbols-outlined text-xl">help</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-500 mb-6">Drag the handles to select audio region. Click on waveform to play from that position.</p>
+                            
+                            <div class="space-y-6">
+                                <div id="cropper-drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">content_cut</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">Audio File Selector</p>
+                                            <p id="cropper-file-name" class="text-slate-500 text-sm">Drag & drop an MP3 or WAV file here or click to browse</p>
+                                        </div>
+                                        <button id="cropper-browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="cropper-file-input" accept=".mp3,.wav" class="hidden">
+                                    </div>
+                                </div>
+
+                                <div id="cropper-editor" class="hidden space-y-6">
+                                    <div class="card rounded-xl p-4">
+                                        <div id="cropper-mode-label" class="text-center text-sm font-medium text-slate-400 mb-2">
+                                            <span id="cropper-mode-text">keep</span>
+                                        </div>
+                                        <div id="cropper-waveform-container" class="relative bg-surface-900 rounded-lg h-36 overflow-visible select-none">
+                                            <canvas id="cropper-waveform" class="w-full h-full rounded-lg"></canvas>
+                                            <div id="cropper-selection" class="absolute top-0 bottom-0 bg-green-500/40 pointer-events-none"></div>
+                                            <div id="cropper-handle-start" class="cropper-handle absolute top-0 bottom-0 w-4 cursor-ew-resize flex items-start justify-center z-10" style="left: 0;">
+                                                <div class="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-green-400"></div>
+                                                <div class="absolute top-3 bottom-0 w-0.5 bg-green-400"></div>
+                                            </div>
+                                            <div id="cropper-handle-end" class="cropper-handle absolute top-0 bottom-0 w-4 cursor-ew-resize flex items-start justify-center z-10" style="right: 0;">
+                                                <div class="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-green-400"></div>
+                                                <div class="absolute top-3 bottom-0 w-0.5 bg-green-400"></div>
+                                            </div>
+                                            <div id="cropper-playhead" class="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none z-20" style="left: 0;"></div>
+                                            <div id="cropper-time-display" class="absolute bottom-1 right-2 text-xs font-mono text-slate-400 bg-surface-900/80 px-1 rounded">
+                                                <span id="cropper-current-time">00:00</span> / <span id="cropper-duration">00:00</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between text-xs text-slate-500 mt-2 px-1">
+                                            <span id="cropper-time-start">0:00</span>
+                                            <span id="cropper-time-end">0:00</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center gap-4">
+                                        <button id="cropper-play-btn" type="button" class="w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 flex items-center justify-center transition-colors">
+                                            <span class="material-symbols-outlined text-3xl text-white">play_arrow</span>
+                                        </button>
+
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm text-slate-400">Mode:</span>
+                                            <button id="cropper-mode-toggle" class="mode-toggle-btn px-4 py-2 rounded-full text-sm font-semibold transition-all">
+                                                <span id="cropper-mode-btn-text">KEEP</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm text-slate-400">Start:</span>
+                                            <div class="flex items-center">
+                                                <button id="cropper-start-dec" class="w-7 h-7 rounded-l bg-surface-700 hover:bg-surface-600 text-slate-300 flex items-center justify-center">-</button>
+                                                <input id="cropper-sel-start" class="w-20 h-7 bg-surface-800 text-white text-center text-sm font-mono border-y border-surface-700" value="0.00"/>
+                                                <button id="cropper-start-inc" class="w-7 h-7 rounded-r bg-surface-700 hover:bg-surface-600 text-slate-300 flex items-center justify-center">+</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm text-slate-400">End:</span>
+                                            <div class="flex items-center">
+                                                <button id="cropper-end-dec" class="w-7 h-7 rounded-l bg-surface-700 hover:bg-surface-600 text-slate-300 flex items-center justify-center">-</button>
+                                                <input id="cropper-sel-end" class="w-20 h-7 bg-surface-800 text-white text-center text-sm font-mono border-y border-surface-700" value="0.00"/>
+                                                <button id="cropper-end-inc" class="w-7 h-7 rounded-r bg-surface-700 hover:bg-surface-600 text-slate-300 flex items-center justify-center">+</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-sm text-slate-400">Fade In:</span>
+                                            <input id="cropper-fade-in-duration" type="number" step="0.1" min="0" max="10" value="0" class="w-16 h-7 px-2 rounded bg-surface-800 text-white text-center text-sm border border-surface-700"/>
+                                            <span class="text-xs text-slate-500">sec</span>
+                                            <span class="text-sm text-slate-400 ml-2">Out:</span>
+                                            <input id="cropper-fade-out-duration" type="number" step="0.1" min="0" max="10" value="0" class="w-16 h-7 px-2 rounded bg-surface-800 text-white text-center text-sm border border-surface-700"/>
+                                            <span class="text-xs text-slate-500">sec</span>
+                                        </div>
+
+                                        <div class="flex items-center gap-4 px-4 py-2 rounded-lg bg-slate-800/40 border border-slate-700/50">
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <div class="form-switch">
+                                                    <input type="checkbox" id="audio-silence-trim">
+                                                    <span class="slider"></span>
+                                                </div>
+                                                <span class="text-sm text-slate-300">Trim Silence</span>
+                                            </label>
+                                        </div>
+
+                                            <div class="flex items-center gap-4 px-4 py-2 rounded-lg bg-slate-800/40 border border-slate-700/50">
+                                                <label class="flex items-center gap-2 cursor-pointer">
+                                                    <div class="form-switch">
+                                                        <input type="checkbox" id="audio-silence-trim">
+                                                        <span class="slider"></span>
+                                                    </div>
+                                                    <span class="text-sm text-slate-300">Trim Silence</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm text-slate-400">Output Format</span>
+                                                <select id="cropper-output-format" class="h-9 px-3 rounded bg-surface-800 text-white text-sm border border-surface-700 leading-normal">
+                                                    <option value="mp3" selected>mp3</option>
+                                                    <option value="wav">wav</option>
+                                                </select>
+                                            </div>
+
+                                        <button id="cropper-crop-btn" type="button" class="ml-auto px-6 py-2 rounded bg-blue-500 hover:bg-blue-400 text-white font-semibold transition-colors">
+                                            Crop
+                                        </button>
+                                    </div>
+
+
+                                    <input id="cropper-output-name" type="hidden" value=""/>
+
+                                    <div class="space-y-4">
+                                        <div id="cropper-status-message" class="status-badge idle">Ready to edit</div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-slate-300 mb-2">Console Output</h3>
+                                            <div id="cropper-console-box" class="console-box card rounded-lg p-4">
+                                                <div class="console-entry">
+                                                    <span class="console-timestamp">[--:--:--]</span>
+                                                    <span class="text-slate-500">Ready. Load an audio file to begin.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="volume-content" class="audio-subtab-content hidden">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Volume Controls</h2>
+                                <button id="volume-help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                    <span class="material-symbols-outlined text-xl">help</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-500 mb-6">Adjust overall volume or apply section-specific volume changes</p>
+                            
+                            <div class="space-y-6">
+                                <div id="volume-drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">volume_up</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">Audio File Selector</p>
+                                            <p id="volume-file-name" class="text-slate-500 text-sm">Drag & drop an MP3 or WAV file here or click to browse</p>
+                                        </div>
+                                        <button id="volume-browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="volume-file-input" accept=".mp3,.wav" class="hidden">
+                                    </div>
+                                </div>
+                                
+                                <div id="volume-editor" class="hidden space-y-6">
+                                    <div class="card rounded-lg p-6">
+                                        <h3 class="text-lg font-semibold text-white mb-4">Simple Volume Adjustment</h3>
+                                        <div class="flex flex-wrap items-center gap-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm text-slate-400">Volume:</span>
+                                                <button id="volume-down-btn" class="w-10 h-10 rounded-lg bg-surface-700 hover:bg-surface-600 text-white flex items-center justify-center">
+                                                    <span class="material-symbols-outlined">remove</span>
+                                                </button>
+                                                <input id="volume-level" type="number" step="1" min="-100" max="200" value="0" class="w-20 h-10 px-2 rounded bg-surface-800 text-white text-center text-sm border border-surface-700"/>
+                                                <span class="text-xs text-slate-500">%</span>
+                                                <button id="volume-up-btn" class="w-10 h-10 rounded-lg bg-surface-700 hover:bg-surface-600 text-white flex items-center justify-center">
+                                                    <span class="material-symbols-outlined">add</span>
+                                                </button>
+                                            </div>
+                                            <button id="volume-normalize-btn" type="button" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold text-white flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-lg">auto_fix_high</span>
+                                                Normalize to Standard
+                                            </button>
+                                            <div class="flex items-center gap-4">
+                                                <label class="flex items-center gap-2 cursor-pointer">
+                                                    <div class="form-switch">
+                                                        <input type="checkbox" id="volume-trim-start">
+                                                        <span class="slider"></span>
+                                                    </div>
+                                                    <span class="text-sm text-slate-300">Trim Start Silence</span>
+                                                </label>
+                                                <label class="flex items-center gap-2 cursor-pointer">
+                                                    <div class="form-switch">
+                                                        <input type="checkbox" id="volume-trim-end">
+                                                        <span class="slider"></span>
+                                                    </div>
+                                                    <span class="text-sm text-slate-300">Trim End Silence</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card rounded-lg p-6">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="text-lg font-semibold text-white">Advanced Section Editor</h3>
+                                            <button id="volume-advanced-toggle" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-lg">expand_more</span>
+                                                Show Advanced
+                                            </button>
+                                        </div>
+                                        
+                                        <div id="volume-advanced-section" class="hidden space-y-4">
+                                            <div id="volume-waveform-container" class="relative bg-surface-900 rounded-lg h-36 overflow-visible select-none">
+                                                <canvas id="volume-waveform" class="w-full h-full rounded-lg"></canvas>
+                                                <div id="volume-selection" class="absolute top-0 bottom-0 bg-blue-500/40 pointer-events-none"></div>
+                                                <div id="volume-handle-start" class="volume-handle absolute top-0 bottom-0 w-4 cursor-ew-resize flex items-start justify-center z-10" style="left: 0;">
+                                                    <div class="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-blue-400"></div>
+                                                </div>
+                                                <div id="volume-handle-end" class="volume-handle absolute top-0 bottom-0 w-4 cursor-ew-resize flex items-start justify-center z-10" style="right: 0;">
+                                                    <div class="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-blue-400"></div>
+                                                </div>
+                                                <div id="volume-playhead" class="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none z-20" style="left: 0;"></div>
+                                            </div>
+                                            <div class="flex justify-between text-xs text-slate-500 px-1">
+                                                <span id="volume-time-start">0:00</span>
+                                                <span id="volume-time-end">0:00</span>
+                                            </div>
+                                            
+                                            <div class="flex flex-wrap items-center gap-4">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-sm text-slate-400">Selection Start:</span>
+                                                    <input id="volume-sel-start" type="text" class="w-20 h-8 px-2 rounded bg-surface-800 text-white text-center text-sm font-mono border border-surface-700" value="0.00"/>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-sm text-slate-400">End:</span>
+                                                    <input id="volume-sel-end" type="text" class="w-20 h-8 px-2 rounded bg-surface-800 text-white text-center text-sm font-mono border border-surface-700" value="0.00"/>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-sm text-slate-400">Section Volume:</span>
+                                                    <input id="volume-section-level" type="number" step="1" min="-100" max="200" value="0" class="w-20 h-8 px-2 rounded bg-surface-800 text-white text-center text-sm border border-surface-700"/>
+                                                    <span class="text-xs text-slate-500">%</span>
+                                                </div>
+                                                <button id="volume-add-edit-btn" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                                    Add Volume Edit
+                                                </button>
+                                            </div>
+                                            
+                                            <div id="volume-edits-list" class="space-y-2">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card rounded-lg p-4">
+                                        <h3 class="text-sm font-semibold text-slate-300 mb-3">Preview</h3>
+                                        <div class="flex flex-wrap items-center gap-4">
+                                            <button id="volume-play-btn" type="button" class="w-12 h-12 rounded-full bg-green-500 hover:bg-green-400 flex items-center justify-center transition-colors">
+                                                <span class="material-symbols-outlined text-2xl text-white">play_arrow</span>
+                                            </button>
+                                            <div class="flex items-center gap-2">
+                                                <span id="volume-current-time" class="text-sm font-mono text-slate-400">0:00</span>
+                                                <span class="text-slate-600">/</span>
+                                                <span id="volume-duration" class="text-sm font-mono text-slate-400">0:00</span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm text-slate-400">Output Format:</span>
+                                                <select id="volume-output-format" class="h-9 px-3 rounded bg-surface-800 text-white text-sm border border-surface-700 leading-normal">
+                                                    <option value="mp3" selected>mp3</option>
+                                                    <option value="wav">wav</option>
+                                                </select>
+                                            </div>
+                                            <button id="volume-apply-btn" type="button" class="ml-auto px-6 py-2 rounded bg-blue-500 hover:bg-blue-400 text-white font-semibold transition-colors">
+                                                Apply & Download
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <input id="volume-output-name" type="hidden" value=""/>
+
+                                    <div class="space-y-4">
+                                        <div id="volume-status-message" class="status-badge idle">Ready to edit</div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-slate-300 mb-2">Console Output</h3>
+                                            <div id="volume-console-box" class="console-box card rounded-lg p-4">
+                                                <div class="console-entry">
+                                                    <span class="console-timestamp">[--:--:--]</span>
+                                                    <span class="text-slate-500">Ready. Load an audio file to begin.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="albumart-content" class="audio-subtab-content hidden">
+                        <div class="max-w-4xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h2 class="text-2xl font-bold text-white">Album Art</h2>
+                            </div>
+                            <p class="text-slate-500 mb-6">Crop, resize, and convert images for album artwork</p>
+                            
+                            <div class="space-y-6">
+                                <div id="albumart-drop-zone" class="drop-zone rounded-xl p-10 cursor-pointer">
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-3xl text-primary">image</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold mb-1">Image File Selector</p>
+                                            <p id="albumart-file-name" class="text-slate-500 text-sm">Drag & drop an image here or click to browse</p>
+                                        </div>
+                                        <button id="albumart-browse-button" type="button" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium text-white">
+                                            Browse Files
+                                        </button>
+                                        <input type="file" id="albumart-file-input" accept="image/*" class="hidden">
+                                    </div>
+                                </div>
+                                
+                                <div id="albumart-editor" class="hidden space-y-6">
+                                    <div class="card rounded-lg p-6">
+                                        <h3 class="text-lg font-semibold text-white mb-4">Crop to Square (1:1)</h3>
+                                        <div id="albumart-crop-container" class="relative bg-surface-900 rounded-lg overflow-hidden flex items-center justify-center" style="min-height: 300px;">
+                                            <img id="albumart-preview" class="max-w-full max-h-96" alt="Preview"/>
+                                            <div id="albumart-crop-overlay" class="absolute border-2 border-white cursor-move" style="display: none;">
+                                                <div class="absolute inset-0 bg-white/10"></div>
+                                                <div id="albumart-crop-handle-tl" class="absolute -top-2 -left-2 w-4 h-4 bg-white rounded-full cursor-nw-resize"></div>
+                                                <div id="albumart-crop-handle-tr" class="absolute -top-2 -right-2 w-4 h-4 bg-white rounded-full cursor-ne-resize"></div>
+                                                <div id="albumart-crop-handle-bl" class="absolute -bottom-2 -left-2 w-4 h-4 bg-white rounded-full cursor-sw-resize"></div>
+                                                <div id="albumart-crop-handle-br" class="absolute -bottom-2 -right-2 w-4 h-4 bg-white rounded-full cursor-se-resize"></div>
+                                            </div>
+                                        </div>
+                                        <p id="albumart-crop-info" class="text-sm text-slate-400 mt-3 text-center"></p>
+                                    </div>
+
+                                    <div class="card rounded-lg p-6">
+                                        <h3 class="text-lg font-semibold text-white mb-4">Output Settings</h3>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Output Size (pixels)</span>
+                                                <select id="albumart-output-size" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                    <option value="500">500 x 500</option>
+                                                    <option value="1000">1000 x 1000</option>
+                                                    <option value="1400" selected>1400 x 1400</option>
+                                                    <option value="1500">1500 x 1500</option>
+                                                    <option value="3000">3000 x 3000</option>
+                                                    <option value="custom">Custom...</option>
+                                                </select>
+                                            </label>
+                                            <label id="albumart-custom-size-container" class="flex flex-col hidden">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Custom Size (pixels)</span>
+                                                <input id="albumart-custom-size" type="number" min="100" max="10000" value="1400" class="input-field h-12 px-4 rounded-lg text-white" placeholder="Enter size"/>
+                                            </label>
+                                            <label class="flex flex-col">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">Output Format</span>
+                                                <select id="albumart-output-format" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                    <option value="png" selected>PNG</option>
+                                                    <option value="jpeg">JPG</option>
+                                                </select>
+                                            </label>
+                                            <label id="albumart-quality-container" class="flex flex-col hidden">
+                                                <span class="text-sm font-medium text-slate-300 mb-2">JPG Quality</span>
+                                                <select id="albumart-quality" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                                    <option value="0.7">70%</option>
+                                                    <option value="0.8">80%</option>
+                                                    <option value="0.9" selected>90%</option>
+                                                    <option value="0.95">95%</option>
+                                                    <option value="1">100%</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-end">
+                                        <button id="albumart-download-btn" type="button" class="btn-primary flex items-center gap-2 px-6 py-3 rounded-lg text-white font-semibold">
+                                            <span class="material-symbols-outlined">download</span>
+                                            Download Album Art
+                                        </button>
+                                    </div>
+
+                                    <div id="albumart-status-message" class="status-badge idle">Ready</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="addons-content" class="tab-content">
+                    <h2 class="text-2xl font-bold text-white mb-6">Addons</h2>
+                    <div id="addons-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    </div>
+                </div>
+
+                <div id="scoreboard-content" class="tab-content">
+                    <div class="max-w-4xl">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h2 class="text-2xl font-bold text-white">Scoreboard Builder</h2>
+                            <button id="scoreboard-help-button" type="button" class="btn-secondary flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white" title="Help">
+                                <span class="material-symbols-outlined text-xl">help</span>
+                            </button>
+                        </div>
+                        <p class="text-slate-500 mb-8">Build titleraw commands for Minecraft Bedrock Edition actionbar displays</p>
+
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <label class="flex flex-col">
+                                    <span class="text-sm font-medium text-slate-300 mb-2">Target Selector</span>
+                                    <input id="scoreboard-target" class="input-field h-12 px-4 rounded-lg text-white" placeholder="@s" value="@s"/>
+                                </label>
+                                <label class="flex flex-col">
+                                    <span class="text-sm font-medium text-slate-300 mb-2">Display Type</span>
+                                    <select id="scoreboard-display-type" class="input-field h-12 px-4 rounded-lg text-white appearance-none bg-[right_1rem_center] bg-no-repeat bg-[length:1.25em_1.25em]" style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%2394a3b8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"m6 8 4 4 4-4\"/></svg>')">
+                                        <option value="actionbar">Actionbar</option>
+                                        <option value="title">Title</option>
+                                        <option value="subtitle">Subtitle</option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="section-divider"></div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold text-white">Content Rows</h3>
+                                    <button id="scoreboard-add-row" type="button" class="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white">
+                                        <span class="material-symbols-outlined text-lg">add</span>
+                                        Add Row
+                                    </button>
+                                </div>
+                                
+                                <div id="scoreboard-rows" class="space-y-3">
+                                </div>
+                            </div>
+
+                            <div class="section-divider"></div>
+
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Preview</h3>
+                                <div id="scoreboard-preview" class="card p-6 min-h-[100px] flex items-start justify-start text-left bg-black/40 border-slate-700/50 rounded-xl overflow-hidden">
+                                    <div id="preview-content" class="text-xl sm:text-2xl break-words w-full font-mono"></div>
+                                </div>
+                            </div>
+
+                            <div class="section-divider"></div>
+
+                            <div>
+                                <h3 class="text-lg font-semibold text-white mb-4">Generated Command</h3>
+                                <div class="relative">
+                                    <textarea id="scoreboard-output" readonly class="w-full h-32 resize-none rounded-lg text-white input-field p-4 text-sm font-mono" placeholder="Add rows to generate your command..."></textarea>
+                                    <button id="scoreboard-copy" type="button" class="absolute top-3 right-3 btn-secondary flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-white">
+                                        <span class="material-symbols-outlined text-base">content_copy</span>
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <div id="addon-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 modal-backdrop">
+        <div class="relative w-full max-w-2xl card rounded-2xl">
+            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-700/50">
+                <h2 id="modal-title" class="text-2xl font-bold text-white"></h2>
+                <button id="modal-close-btn" class="text-slate-400 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            <div class="px-6 py-6">
+                <div id="modal-description-container" class="mb-6 max-h-96 overflow-y-auto rounded-lg bg-surface-900 p-4 border border-slate-700/30">
+                    <p id="modal-description" class="text-slate-400 leading-relaxed whitespace-pre-wrap"></p>
+                </div>
+                <button id="modal-download-btn" class="w-full btn-primary py-4 px-6 rounded-lg font-semibold text-white">
+                    <span class="flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">download</span>
+                        Download Addon
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 modal-backdrop">
+        <div class="relative w-full max-w-2xl card rounded-2xl">
+            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-700/50">
+                <h2 id="help-modal-title" class="text-2xl font-bold text-white">Help</h2>
+                <button id="help-modal-close-btn" class="text-slate-400 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+            <div class="px-6 py-6">
+                <div id="help-modal-description-container" class="max-h-[500px] overflow-y-auto rounded-lg bg-surface-900 p-6 border border-slate-700/30">
+                    <div id="help-modal-content" class="text-slate-400 leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./tab-navigation.js"></script>
+    <script type="module" src="./app.js"></script>
+    <script type="module" src="./world-converter.js"></script>
+    <script type="module" src="./addons.js"></script>
+    <script type="module" src="./scoreboard-builder.js"></script>
+    <script type="module" src="./audio-tools.js"></script>
+    <script type="module" src="./audio-cropper.js"></script>
+    <script type="module" src="./volume-controls.js"></script>
+    <script src="./albumart.js"></script>
+</body>
+</html>
